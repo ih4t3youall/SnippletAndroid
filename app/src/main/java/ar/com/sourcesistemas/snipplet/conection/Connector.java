@@ -2,6 +2,8 @@ package ar.com.sourcesistemas.snipplet.conection;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -12,6 +14,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 
+import ar.com.sourcesistemas.snipplet.AdministrarNubeActivity;
 import ar.com.sourcesistemas.snipplet.MainActivity;
 import ar.com.sourcesistemas.snipplet.domain.UserConfiguration;
 import ar.com.sourcesistemas.snipplet.dto.CategoriaDTO;
@@ -34,7 +37,7 @@ private Context context;
     private String[] directorios = null;
 
 
-    public String[] list() throws IOException {
+    public String[] list(final LinearLayout linearLayout,final AdministrarNubeActivity context) throws IOException {
         configurationService = new ConfigurationService();
         String url = configurationService.getUri() + "listarServer";
 
@@ -72,6 +75,10 @@ private Context context;
 
                 directorios = mapper.readValue(responseBody, String[].class);
 
+                context.setLista(directorios);
+
+
+
 
             }
         });
@@ -81,8 +88,22 @@ private Context context;
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
         return directorios;
     }
+
+
 
 
 

@@ -18,6 +18,7 @@ public class AdministrarNubeActivity extends Activity {
     private Context context;
     private DatabaseHandler databaseHandler;
     private Button listar;
+    public LinearLayout nose =null;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -27,8 +28,32 @@ public class AdministrarNubeActivity extends Activity {
         setContentView(R.layout.administrar_nube);
 
         listar =  (Button)findViewById(R.id.listar);
-        LinearLayout linearLayout = (LinearLayout)findViewById(R.id.layout);
-        listar.setOnClickListener(new ListarNubeListener(this,linearLayout));
+
+        LinearLayout linearLayout = (LinearLayout)findViewById(R.id.layoutLista);
+        nose = linearLayout;
+        listar.setOnClickListener(new ListarNubeListener(this));
+
+    }
+
+    public void setLista(final String[] directorios) {
+
+
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    for (String string:directorios ) {
+                        Button buton = new Button(context);
+                        buton.setText(string);
+                        nose.addView(buton);
+                    }
+
+
+                }
+            });
+
+
+
+
 
     }
 }

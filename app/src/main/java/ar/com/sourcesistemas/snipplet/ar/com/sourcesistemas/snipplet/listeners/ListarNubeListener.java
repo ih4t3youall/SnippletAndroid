@@ -7,6 +7,7 @@ import android.widget.LinearLayout;
 
 import java.io.IOException;
 
+import ar.com.sourcesistemas.snipplet.AdministrarNubeActivity;
 import ar.com.sourcesistemas.snipplet.conection.Connector;
 
 /**
@@ -15,9 +16,9 @@ import ar.com.sourcesistemas.snipplet.conection.Connector;
 
 public class ListarNubeListener implements View.OnClickListener {
 
-    private Context context;
+    private AdministrarNubeActivity context;
     private LinearLayout linearLayout;
-    public ListarNubeListener(Context context, LinearLayout linearLayout){
+    public ListarNubeListener(AdministrarNubeActivity context){
         this.linearLayout = linearLayout;
        this.context = context;
     }
@@ -28,20 +29,13 @@ public class ListarNubeListener implements View.OnClickListener {
 
         Connector connector = new Connector();
         String[] files=null ;
+
         try {
-            files = connector.list();
+            files = connector.list(linearLayout,context);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        for(int i = 0; i < files.length; i++){
-
-            Button boton = new Button(context);
-            boton.setText(files[i]);
-            linearLayout.addView(boton);
-
-
-        }
 
     }
 }
