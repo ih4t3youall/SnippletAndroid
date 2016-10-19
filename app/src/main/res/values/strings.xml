@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Snipplet</string>
+    <string name="bontonCategoria">Boton</string>
+    <string name="hint_search">Boton</string>
+    <string name="add">add</string>
+    <string name="search">search</string>
+    <string name="edit">edit</string>
+    <string name="delete">delete</string>
+    <string name="action_settings">action_settings</string>
+    <string name="preferences">opciones</string>
+    <string name="nube">nube</string>
+    <string name="text">text</string>
+</resources>
