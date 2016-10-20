@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import ar.com.sourcesistemas.snipplet.ar.com.sourcesistemas.snipplet.listeners.DescargarDeNubeListener;
 import ar.com.sourcesistemas.snipplet.ar.com.sourcesistemas.snipplet.listeners.ListarNubeListener;
 import ar.com.sourcesistemas.snipplet.database.DatabaseHandler;
 
@@ -18,7 +19,7 @@ public class AdministrarNubeActivity extends Activity {
     private Context context;
     private DatabaseHandler databaseHandler;
     private Button listar;
-    public LinearLayout nose =null;
+    public LinearLayout linearLayout =null;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -29,8 +30,8 @@ public class AdministrarNubeActivity extends Activity {
 
         listar =  (Button)findViewById(R.id.listar);
 
-        LinearLayout linearLayout = (LinearLayout)findViewById(R.id.layoutLista);
-        nose = linearLayout;
+        linearLayout = (LinearLayout)findViewById(R.id.layoutLista);
+
         listar.setOnClickListener(new ListarNubeListener(this));
 
     }
@@ -42,9 +43,11 @@ public class AdministrarNubeActivity extends Activity {
                 @Override
                 public void run() {
                     for (String string:directorios ) {
-                        Button buton = new Button(context);
-                        buton.setText(string);
-                        nose.addView(buton);
+                        Button button = new Button(context);
+                        button.setText(string);
+                        linearLayout.addView(button);
+                        button.setOnClickListener(new DescargarDeNubeListener(string));
+
                     }
 
 

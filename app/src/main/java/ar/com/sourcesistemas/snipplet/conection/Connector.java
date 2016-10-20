@@ -32,7 +32,7 @@ public class Connector {
 private Context context;
 
 
-    ConfigurationService configurationService;
+    ConfigurationService configurationService = new ConfigurationService();
     final OkHttpClient client = new OkHttpClient();
     private String[] directorios = null;
 
@@ -82,22 +82,6 @@ private Context context;
 
             }
         });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
         return directorios;
@@ -154,6 +138,33 @@ private Context context;
 
         Request request = new Request.Builder().url(url).post(body).build();
         okhttp3.Response response = client.newCall(request).execute();
+
+
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Call call, final Response response) throws IOException {
+                if (!response.isSuccessful()) {
+                    throw new IOException("Unexpected code " + response);
+                }
+
+                String responseBody = response.body().string();
+
+                directorios = mapper.readValue(responseBody, String[].class);
+
+                context.setLista(directorios);
+
+
+
+
+            }
+        });
+
 
         String responseBody = response.body().string();
 
