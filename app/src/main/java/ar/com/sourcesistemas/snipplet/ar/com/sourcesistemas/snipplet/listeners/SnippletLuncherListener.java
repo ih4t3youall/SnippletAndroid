@@ -23,6 +23,7 @@ public class SnippletLuncherListener  implements View.OnClickListener{
     public void onClick(View v) {
 
         Intent intent = new Intent(context, SnippletActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra("nombre", buttonName);
         context.startActivity(intent);
 
