@@ -1,13 +1,15 @@
 package ar.com.sourcesistemas.snipplet.dto;
 
 
+        import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
         import java.io.Serializable;
         import java.util.ArrayList;
         import java.util.List;
 
         import ar.com.sourcesistemas.snipplet.domain.Snipplet;
 
-
+@JsonIgnoreProperties({"idCategoria"})
 public class CategoriaDTO implements Serializable {
 
     /**
@@ -15,7 +17,7 @@ public class CategoriaDTO implements Serializable {
      */
     private static final long serialVersionUID = 1L;
 
-    private int idCategoria;
+    private long idCategoria;
     private String nombre;
     private List<Snipplet> snipplets;
     private List<String> tags;
@@ -39,11 +41,11 @@ public class CategoriaDTO implements Serializable {
 
     }
 
-    public int getIdCategoria() {
+    public long getIdCategoria() {
         return idCategoria;
     }
 
-    public void setIdCategoria(int idCategoria) {
+    public void setIdCategoria(long idCategoria) {
         this.idCategoria = idCategoria;
     }
 

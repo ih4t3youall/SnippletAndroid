@@ -59,7 +59,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
-        db.insert(TABLE_CATEGORIA, null, values);
+        long id = db.insert(TABLE_CATEGORIA, null, values);
+        categoriaDTO.setIdCategoria(id);
         db.close();
     }
 
@@ -157,6 +158,34 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion,
                           int newVersion) {
+
+    }
+
+
+    public void deleteALL(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String drop1= "drop table snipplet";
+        String drop2 ="drop table categoria";
+        String drop3 ="drop table tags";
+        String drop4 ="drop table categoria_tag";
+        db.execSQL(drop1);
+        db.execSQL(drop2);
+        db.execSQL(drop3);
+        db.execSQL(drop4);
+
+        String CREATE_SNIPPLET_TABLE=" CREATE TABLE `snipplet` (  `id`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,   `titulo`	TEXT,    `contenido`	TEXT,`id_categoria` INTEGER    )";
+
+        String CREATE_CATEGORIA_TABLE = "CREATE TABLE `categoria` (  `id`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,`nombre`	TEXT UNIQUE, `tags`	INTEGER )";
+
+        String CARETE_TAGS_TABLE ="CREATE TABLE `tags` (   `id`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,  `nombre`	TEXT UNIQUE  )";
+
+        String CREATE_CATEGORIATAG_TABLE = "CREATE TABLE `categoria_tag` ( `id_categoria`	INTEGER,  `id_tag`	INTEGER    )";
+
+
+        db.execSQL(CREATE_SNIPPLET_TABLE);
+        db.execSQL(CREATE_CATEGORIA_TABLE);
+        db.execSQL(CARETE_TAGS_TABLE);
+        db.execSQL(CREATE_CATEGORIATAG_TABLE);
 
     }
 

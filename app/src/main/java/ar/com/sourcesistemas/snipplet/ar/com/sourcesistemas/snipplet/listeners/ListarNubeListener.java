@@ -27,7 +27,7 @@ public class ListarNubeListener implements View.OnClickListener {
     @Override
     public void onClick(View v) {
 
-        Connector connector = new Connector();
+        Connector connector = new Connector(context);
         String[] files=null ;
 
         try {

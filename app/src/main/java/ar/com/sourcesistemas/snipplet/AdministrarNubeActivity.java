@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import ar.com.sourcesistemas.snipplet.ar.com.sourcesistemas.snipplet.listeners.DescargarDeNubeListener;
+import ar.com.sourcesistemas.snipplet.ar.com.sourcesistemas.snipplet.listeners.DownloadFromServerListener;
 import ar.com.sourcesistemas.snipplet.ar.com.sourcesistemas.snipplet.listeners.ListarNubeListener;
 import ar.com.sourcesistemas.snipplet.database.DatabaseHandler;
 
@@ -29,10 +30,12 @@ public class AdministrarNubeActivity extends Activity {
         setContentView(R.layout.administrar_nube);
 
         listar =  (Button)findViewById(R.id.listar);
+        Button download = (Button) findViewById(R.id.bajar);
 
         linearLayout = (LinearLayout)findViewById(R.id.layoutLista);
 
         listar.setOnClickListener(new ListarNubeListener(this));
+
 
     }
 
@@ -46,13 +49,15 @@ public class AdministrarNubeActivity extends Activity {
                         Button button = new Button(context);
                         button.setText(string);
                         linearLayout.addView(button);
-                        button.setOnClickListener(new DescargarDeNubeListener(string));
+                        button.setOnClickListener(new DescargarDeNubeListener(string,context));
 
                     }
 
 
                 }
             });
+
+
 
 
 

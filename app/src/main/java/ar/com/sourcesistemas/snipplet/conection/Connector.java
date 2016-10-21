@@ -16,8 +16,10 @@ import java.util.ResourceBundle;
 
 import ar.com.sourcesistemas.snipplet.AdministrarNubeActivity;
 import ar.com.sourcesistemas.snipplet.MainActivity;
+import ar.com.sourcesistemas.snipplet.database.DatabaseHandler;
 import ar.com.sourcesistemas.snipplet.domain.UserConfiguration;
 import ar.com.sourcesistemas.snipplet.dto.CategoriaDTO;
+
 import ar.com.sourcesistemas.snipplet.dto.SendDTO;
 import ar.com.sourcesistemas.snipplet.services.ConfigurationService;
 import okhttp3.Call;
@@ -35,6 +37,13 @@ private Context context;
     ConfigurationService configurationService = new ConfigurationService();
     final OkHttpClient client = new OkHttpClient();
     private String[] directorios = null;
+    private DatabaseHandler databaseHandler;
+
+    public Connector(Context context){
+
+        databaseHandler = new DatabaseHandler(context,null,null,1);
+
+    }
 
 
     public String[] list(final LinearLayout linearLayout,final AdministrarNubeActivity context) throws IOException {
@@ -77,7 +86,7 @@ private Context context;
 
                 context.setLista(directorios);
 
-
+                response.close();
 
 
             }
@@ -131,14 +140,12 @@ private Context context;
         MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
         OkHttpClient client = new OkHttpClient();
-        ObjectMapper mapper = new ObjectMapper();
+        final ObjectMapper mapper = new ObjectMapper();
         String writeValueAsString = mapper.writeValueAsString(send);
         System.out.println(writeValueAsString);
         RequestBody body = RequestBody.create(JSON, writeValueAsString);
 
         Request request = new Request.Builder().url(url).post(body).build();
-        okhttp3.Response response = client.newCall(request).execute();
-
 
 
         client.newCall(request).enqueue(new Callback() {
@@ -155,22 +162,20 @@ private Context context;
 
                 String responseBody = response.body().string();
 
-                directorios = mapper.readValue(responseBody, String[].class);
-
-                context.setLista(directorios);
-
-
+                CategoriaDTO categoriaDTO = mapper.readValue(responseBody, CategoriaDTO.class);
+                System.out.println("categoria nombre: "+categoriaDTO.getNombre());
+                databaseHandler.addCategoria(categoriaDTO);
+                System.out.println("categoria primer snipplet : "+categoriaDTO.getSnipplets().get(0).getTitulo());
+                databaseHandler.addSnipplets(categoriaDTO);
 
 
             }
         });
 
 
-        String responseBody = response.body().string();
 
-        CategoriaDTO categoriaDTO = mapper.readValue(responseBody, CategoriaDTO.class);
 
-        return categoriaDTO;
+        return new CategoriaDTO();
 
     }
 

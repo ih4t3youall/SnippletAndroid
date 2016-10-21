@@ -12,6 +12,10 @@ public class Snipplet implements Serializable {
     private String titulo;
     private String contenido;
 
+    public Snipplet(){
+
+    }
+
     public Snipplet (String titulo,String contenido){
 
         this.titulo = titulo;
