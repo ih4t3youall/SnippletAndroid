@@ -46,7 +46,7 @@ private Context context;
     }
 
 
-    public String[] list(final LinearLayout linearLayout,final AdministrarNubeActivity context) throws IOException {
+    public String[] list(final LinearLayout linearLayout,final AdministrarNubeActivity context,final int eliminar) throws IOException {
         configurationService = new ConfigurationService();
         String url = configurationService.getUri() + "listarServer";
 
@@ -84,7 +84,7 @@ private Context context;
 
                 directorios = mapper.readValue(responseBody, String[].class);
 
-                context.setLista(directorios);
+                context.setLista(directorios,eliminar);
 
                 response.close();
 
@@ -100,14 +100,13 @@ private Context context;
 
 
 
-/*
-    public void borrarDelServer() throws IOException {
+
+    public void deleteFromServer(CategoriaDTO categoriaDTO) throws IOException {
         String url = configurationService.getUri() + "deleteCategory";
-        CategoriaDTO categoriaDTO = new CategoriaDTO();
-        categoriaDTO.setNombre(categoria);
+
         SendDTO send = new SendDTO();
         UserConfiguration userConfiguration = configurationService.getUserConfiguration();
-        send.setUsername(userConfiguration.getUsername());
+        send.setUsername("martin");
         send.setCategoriaDTO(categoriaDTO);
 
 
@@ -120,11 +119,33 @@ private Context context;
         RequestBody body = RequestBody.create(JSON, writeValueAsString);
 
         Request request = new Request.Builder().url(url).post(body).build();
-        okhttp3.Response response = client.newCall(request).execute();
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
 
-        String responseBody = response.body().string();
+            @Override
+            public void onResponse(Call call, final Response response) throws IOException {
+                if (!response.isSuccessful()) {
+                    throw new IOException("Unexpected code " + response);
+                }
+
+                String responseBody = response.body().string();
+
+
+
+
+
+                response.close();
+
+
+            }
+        });
+
+
     }
-    */
+
 
     public CategoriaDTO getFromServer(String nombreCategoria) throws IOException {
 
@@ -179,32 +200,55 @@ private Context context;
 
     }
 
-/*
-    public String sendToServer() throws IOException {
+
+    public String sendToServer(CategoriaDTO categoriaDTO) throws IOException {
         String url = configurationService.getUri() + "guardarCategoria";
-        CategoriaDTO recuperarGuardado = persistencia.recuperarGuardado(filename);
+
         UserConfiguration userConfiguration = configurationService.getUserConfiguration();
         SendDTO send = new SendDTO();
-        send.setUsername(userConfiguration.getUsername());
-        send.setPassword(userConfiguration.getPassword());
-        send.setCategoriaDTO(recuperarGuardado);
+        send.setUsername("martin");
+        send.setPassword("martin");
+        send.setCategoriaDTO(categoriaDTO);
 
         MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
-        if (recuperarGuardado != null) {
+        if (categoriaDTO != null) {
             OkHttpClient client = new OkHttpClient();
-            ObjectMapper mapper = new ObjectMapper();
+            final ObjectMapper mapper = new ObjectMapper();
             String writeValueAsString = mapper.writeValueAsString(send);
             System.out.println(writeValueAsString);
             RequestBody body = RequestBody.create(JSON, writeValueAsString);
 
             Request request = new Request.Builder().url(url).post(body).build();
-            okhttp3.Response response = client.newCall(request).execute();
+            client.newCall(request).enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    e.printStackTrace();
+                }
 
-            String responseBody = response.body().string();
+                @Override
+                public void onResponse(Call call, final Response response) throws IOException {
+                    if (!response.isSuccessful()) {
+                        throw new IOException("Unexpected code " + response);
+                    }
 
-            Toast.makeText(context, responseBody, Toast.LENGTH_SHORT).show();
-            return responseBody;
+                    String responseBody = response.body().string();
+
+                    CategoriaDTO categoriaDTO = mapper.readValue(responseBody, CategoriaDTO.class);
+                    System.out.println("categoria nombre: "+categoriaDTO.getNombre());
+                    databaseHandler.addCategoria(categoriaDTO);
+                    System.out.println("categoria primer snipplet : "+categoriaDTO.getSnipplets().get(0).getTitulo());
+                    databaseHandler.addSnipplets(categoriaDTO);
+
+
+                }
+            });
+
+
+
+
+
+            return "";
         } else {
 
             Toast.makeText(context, "Este archivo no contiene snipplets!", Toast.LENGTH_SHORT).show();
@@ -212,6 +256,6 @@ private Context context;
 
         }
     }
-    */
+
 
 }

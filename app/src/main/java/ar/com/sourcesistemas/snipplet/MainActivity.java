@@ -39,9 +39,9 @@ public class MainActivity extends AppCompatActivity  {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
 
-                //Intent intent = new Intent(getApplicationContext(), AgregarCategoriaActivity.class);
-                //startActivity(intent);
-                databaseHandler.deleteALL();
+                Intent intent = new Intent(getApplicationContext(), AgregarCategoriaActivity.class);
+                startActivity(intent);
+                //databaseHandler.deleteALL();
 
                 return false;
             }

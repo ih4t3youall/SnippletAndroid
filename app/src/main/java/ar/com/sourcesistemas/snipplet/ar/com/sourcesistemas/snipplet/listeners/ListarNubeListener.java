@@ -31,7 +31,7 @@ public class ListarNubeListener implements View.OnClickListener {
         String[] files=null ;
 
         try {
-            files = connector.list(linearLayout,context);
+            files = connector.list(linearLayout,context,1);
         } catch (IOException e) {
             e.printStackTrace();
         }

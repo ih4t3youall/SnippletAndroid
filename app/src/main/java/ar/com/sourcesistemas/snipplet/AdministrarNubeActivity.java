@@ -6,8 +6,10 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import ar.com.sourcesistemas.snipplet.ar.com.sourcesistemas.snipplet.listeners.ButtonUploadListener;
 import ar.com.sourcesistemas.snipplet.ar.com.sourcesistemas.snipplet.listeners.DescargarDeNubeListener;
-import ar.com.sourcesistemas.snipplet.ar.com.sourcesistemas.snipplet.listeners.DownloadFromServerListener;
+import ar.com.sourcesistemas.snipplet.ar.com.sourcesistemas.snipplet.listeners.ButtonEliminarSnippletListener;
+import ar.com.sourcesistemas.snipplet.ar.com.sourcesistemas.snipplet.listeners.EliminarDelServerListener;
 import ar.com.sourcesistemas.snipplet.ar.com.sourcesistemas.snipplet.listeners.ListarNubeListener;
 import ar.com.sourcesistemas.snipplet.database.DatabaseHandler;
 
@@ -30,16 +32,22 @@ public class AdministrarNubeActivity extends Activity {
         setContentView(R.layout.administrar_nube);
 
         listar =  (Button)findViewById(R.id.listar);
-        Button download = (Button) findViewById(R.id.bajar);
+
+        Button download = (Button) findViewById(R.id.upload);
+        Button borrar = (Button) findViewById(R.id.borrar);
+        Button upload = (Button) findViewById(R.id.upload);
 
         linearLayout = (LinearLayout)findViewById(R.id.layoutLista);
 
         listar.setOnClickListener(new ListarNubeListener(this));
+        borrar.setOnClickListener(new ButtonEliminarSnippletListener(this));
+        upload.setOnClickListener(new ButtonUploadListener(this));
+
 
 
     }
 
-    public void setLista(final String[] directorios) {
+    public void setLista(final String[] directorios,final int eliminar) {
 
 
             runOnUiThread(new Runnable() {
@@ -49,7 +57,19 @@ public class AdministrarNubeActivity extends Activity {
                         Button button = new Button(context);
                         button.setText(string);
                         linearLayout.addView(button);
-                        button.setOnClickListener(new DescargarDeNubeListener(string,context));
+
+
+
+                        switch (eliminar){
+
+                           case 0: button.setOnClickListener(new EliminarDelServerListener(string,context));
+                               break;
+                            case 1:
+                                button.setOnClickListener(new DescargarDeNubeListener(string, context));
+                               break;
+                        }
+
+
 
                     }
 
