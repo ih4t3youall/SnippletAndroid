@@ -8,7 +8,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import ar.com.sourcesistemas.snipplet.ar.com.sourcesistemas.snipplet.listeners.EditarSnippletListener;
+import ar.com.sourcesistemas.snipplet.ar.com.sourcesistemas.snipplet.listeners.GuardarSnippletListener;
 import ar.com.sourcesistemas.snipplet.ar.com.sourcesistemas.snipplet.listeners.ListarNubeListener;
 import ar.com.sourcesistemas.snipplet.database.DatabaseHandler;
 import ar.com.sourcesistemas.snipplet.domain.Snipplet;
@@ -40,12 +43,15 @@ public class EditSnippletActivity extends Activity {
         TextView textView = (TextView)findViewById(R.id.contenido);
         editText.setText(snipplet.getTitulo());
         textView.setText(snipplet.getContenido());
+        Button guardar = (Button)findViewById(R.id.guardar);
+        guardar.setOnClickListener(new GuardarSnippletListener(context,snipplet,editText,textView));
 
 
 
 
 
     }
+
 
 
 }

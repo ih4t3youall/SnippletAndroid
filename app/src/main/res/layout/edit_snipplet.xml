@@ -4,6 +4,12 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
+    <Button
+        android:text="Guardar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/guardar" />
+
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,12 +25,12 @@
         android:scrollbars="vertical"
         android:fillViewport="true">
 
-        <TextView
+        <EditText
             android:id="@+id/contenido"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_weight="1.0"
-            android:editable="true" />
+             />
 
     </ScrollView>
 

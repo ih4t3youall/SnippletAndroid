@@ -1,7 +1,9 @@
 package ar.com.sourcesistemas.snipplet.domain;
 
-        import java.io.Serializable;
+        import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+        import java.io.Serializable;
+@JsonIgnoreProperties({"id"})
 public class Snipplet implements Serializable {
 
     /**
@@ -9,6 +11,7 @@ public class Snipplet implements Serializable {
      */
     private static final long serialVersionUID = 1L;
 
+    private long id;
     private String titulo;
     private String contenido;
 
@@ -16,10 +19,11 @@ public class Snipplet implements Serializable {
 
     }
 
-    public Snipplet (String titulo,String contenido){
+    public Snipplet(long id, String titulo, String contenido){
 
         this.titulo = titulo;
         this.contenido = contenido;
+        this.id = id;
 
     }
 
@@ -54,4 +58,11 @@ public class Snipplet implements Serializable {
 
     }
 
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 }

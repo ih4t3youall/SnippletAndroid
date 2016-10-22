@@ -64,6 +64,37 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close();
     }
 
+    public void saveSnipplet(Snipplet snipplet) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues  = new ContentValues();
+        contentValues.put("titulo",snipplet.getTitulo());
+        contentValues.put("contenido",snipplet.getContenido());
+        db.update(TABLE_SNIPPLET, contentValues, "id="+snipplet.getId(), null);
+
+
+
+
+
+    }
+
+
+    /**
+     * Devuelve false si no existe el snipplet
+     * @param snipplet
+     * @return
+     */
+    private boolean existeSnipplet(Snipplet snipplet){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String sql ="select * from "+TABLE_SNIPPLET+" where id ="+snipplet.getId()+"";
+        Cursor cursor = db.rawQuery(sql,null);
+        return cursor.moveToFirst();
+
+
+
+
+    }
+
+
 
     public void addSnipplets(CategoriaDTO categoriaDTO){
         SQLiteDatabase db = this.getWritableDatabase();
@@ -142,7 +173,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     List<Snipplet> snipplets = new LinkedList<Snipplet>();
         while (cursor.moveToNext()){
 
-            snipplets.add(new Snipplet(cursor.getString(1),cursor.getString(2)));
+            snipplets.add(new Snipplet(cursor.getLong(0),cursor.getString(1),cursor.getString(2)));
 
 
         }
@@ -188,5 +219,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.execSQL(CREATE_CATEGORIATAG_TABLE);
 
     }
+
 
 }

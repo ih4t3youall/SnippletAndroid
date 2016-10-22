@@ -41,20 +41,19 @@ public class SnippletActivity  extends Activity{
         databaseHandler = new DatabaseHandler(this,null,null,1);
         context = this;
         setContentView(R.layout.snipplet_container);
-        String nombre = getIntent().getExtras().getString("nombre");
-        getSnipplets(nombre);
+
 
     }
 
 
-    public void getSnipplets(String nombre){
+    public void getSnipplets(String nombre,LinearLayout linearLayout){
 
         CategoriaDTO categoriaDTO = databaseHandler.getCategoriaDTO(nombre);
 
         databaseHandler.getSnipplet(categoriaDTO);
         LayoutInflater inflater = LayoutInflater.from(context);
 
-        LinearLayout linearLayout = (LinearLayout)findViewById(R.id.layout_principal);
+
         for (Snipplet snipplet: categoriaDTO.getSnipplets() ) {
 
             View snippletContainer= inflater.inflate(R.layout.snipplet_layout, null, false);
@@ -71,19 +70,16 @@ public class SnippletActivity  extends Activity{
 
 
 
-
-
-
-
-
-
-
-
-        //LinearLayout linearLayout = (LinearLayout)findViewById(R.id.layout);
-
-
-
-
     }
+
+    public void onResume() {
+
+        super.onResume();
+        String nombre = getIntent().getExtras().getString("nombre");
+        LinearLayout linearLayout = (LinearLayout)findViewById(R.id.layout_principal);
+        linearLayout.removeAllViews();
+        getSnipplets(nombre,linearLayout);
+    }
+
 
 }
