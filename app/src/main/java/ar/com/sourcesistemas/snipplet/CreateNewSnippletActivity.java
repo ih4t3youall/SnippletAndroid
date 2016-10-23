@@ -6,6 +6,7 @@ import android.provider.ContactsContract;
 import android.widget.Button;
 import android.widget.EditText;
 
+import ar.com.sourcesistemas.snipplet.ar.com.sourcesistemas.snipplet.listeners.SaveNewSnippletActionListener;
 import ar.com.sourcesistemas.snipplet.database.DatabaseHandler;
 import ar.com.sourcesistemas.snipplet.dto.CategoriaDTO;
 
@@ -21,7 +22,7 @@ public class CreateNewSnippletActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        nombre = getIntent().getExtras().getString("nombre");
+        CategoriaDTO categoriaDTO = (CategoriaDTO) getIntent().getExtras().get("categoriaDTO");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.edit_snipplet);
 
@@ -29,6 +30,7 @@ public class CreateNewSnippletActivity extends Activity {
 
         databaseHandler = new DatabaseHandler(this,null,null,1);
 
+        save.setOnClickListener(new SaveNewSnippletActionListener(this,categoriaDTO));
 
 
     }

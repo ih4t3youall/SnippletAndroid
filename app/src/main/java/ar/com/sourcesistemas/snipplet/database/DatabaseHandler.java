@@ -21,10 +21,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     public static final String COLUMN_ID = "_id";
 
-
+    private SQLiteDatabase db;
 
     public DatabaseHandler(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, DATABASE_NAME, factory, DATABASE_VERSION);
+
+
+        this.db = this.getWritableDatabase();
     }
 
     @Override
@@ -46,7 +49,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.execSQL(CREATE_CATEGORIA_TABLE);
         db.execSQL(CARETE_TAGS_TABLE);
         db.execSQL(CREATE_CATEGORIATAG_TABLE);
-
+        db.close();
     }
 
 
@@ -57,15 +60,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put("nombre", categoriaDTO.getNombre());
         values.put("tags", "null");
 
-        SQLiteDatabase db = this.getWritableDatabase();
+
 
         long id = db.insert(TABLE_CATEGORIA, null, values);
         categoriaDTO.setIdCategoria(id);
-        db.close();
+
+
     }
 
     public void saveSnipplet(Snipplet snipplet) {
-        SQLiteDatabase db = this.getWritableDatabase();
+
         ContentValues contentValues  = new ContentValues();
         contentValues.put("titulo",snipplet.getTitulo());
         contentValues.put("contenido",snipplet.getContenido());
@@ -84,12 +88,29 @@ public class DatabaseHandler extends SQLiteOpenHelper {
      * @return
      */
     private boolean existeSnipplet(Snipplet snipplet){
-        SQLiteDatabase db = this.getWritableDatabase();
+
         String sql ="select * from "+TABLE_SNIPPLET+" where id ="+snipplet.getId()+"";
         Cursor cursor = db.rawQuery(sql,null);
+        cursor.close();
+
+
+
         return cursor.moveToFirst();
 
+    }
 
+
+    public void insertNewSnipplet(CategoriaDTO categoriaDTO, String titulo, String contenido) {
+
+
+        categoriaDTO = getCategoriaDTO(categoriaDTO.getNombre());
+        ContentValues values = new ContentValues();
+        values.put("titulo", titulo);
+        values.put("contenido", contenido);
+        values.put("id_categoria",categoriaDTO.getIdCategoria());
+
+
+        db.insert(TABLE_SNIPPLET, null, values);
 
 
     }
@@ -97,7 +118,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 
     public void addSnipplets(CategoriaDTO categoriaDTO){
-        SQLiteDatabase db = this.getWritableDatabase();
+
         for (Snipplet sniplet: categoriaDTO.getSnipplets()  ) {
 
             ContentValues values = new ContentValues();
@@ -119,7 +140,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         String query = "Select * FROM " + TABLE_CATEGORIA ;
 
-        SQLiteDatabase db = this.getWritableDatabase();
+
 
         Cursor cursor = db.rawQuery(query, null);
         List<CategoriaDTO> categoriasDTO = new LinkedList<CategoriaDTO>();
@@ -140,7 +161,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         String query = "Select * FROM " + TABLE_CATEGORIA + " WHERE nombre =  \"" + nombreCategoria + "\"";
 
-        SQLiteDatabase db = this.getWritableDatabase();
+
 
         Cursor cursor = db.rawQuery(query, null);
 
@@ -155,7 +176,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         } else {
             categoriaDTO = null;
         }
-        db.close();
+
         return categoriaDTO;
 
 
@@ -165,7 +186,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public CategoriaDTO getSnipplet(CategoriaDTO categoriaDTO){
         String query = "Select * FROM " + TABLE_SNIPPLET + " WHERE id_categoria =  \"" + categoriaDTO.getIdCategoria() + "\"";
 
-        SQLiteDatabase db = this.getWritableDatabase();
+
 
         Cursor cursor = db.rawQuery(query, null);
 
@@ -178,7 +199,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         }
         cursor.close();
-        db.close();
+
         categoriaDTO.setSnipplets(snipplets);
         return categoriaDTO;
 
@@ -218,7 +239,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.execSQL(CARETE_TAGS_TABLE);
         db.execSQL(CREATE_CATEGORIATAG_TABLE);
 
+
     }
 
+    public void closeDatabase(){
+
+        db.close();
+
+    }
 
 }

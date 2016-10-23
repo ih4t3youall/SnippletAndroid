@@ -13,6 +13,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import ar.com.sourcesistemas.snipplet.ar.com.sourcesistemas.snipplet.listeners.AddButtonActionListener;
 import ar.com.sourcesistemas.snipplet.ar.com.sourcesistemas.snipplet.listeners.EditarSnippletListener;
 import ar.com.sourcesistemas.snipplet.database.DatabaseHandler;
 import ar.com.sourcesistemas.snipplet.domain.Snipplet;
@@ -28,12 +29,13 @@ public class SnippletActivity  extends Activity{
     protected Context context ;
     private DatabaseHandler databaseHandler;
     private List<View> snipplets;
+    private Bundle savedInstanceState;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-
+        this.savedInstanceState =savedInstanceState;
         super.onCreate(savedInstanceState);
 
         snipplets = new ArrayList<View>();
@@ -43,6 +45,14 @@ public class SnippletActivity  extends Activity{
         setContentView(R.layout.snipplet_container);
         String nombre = getIntent().getExtras().getString("nombre");
         getSnipplets(nombre);
+        Button  add = (Button)findViewById(R.id.add);
+        add.setOnClickListener(new AddButtonActionListener(this,new CategoriaDTO(nombre)));
+
+    }
+
+    public void onResume() {
+
+        this.onCreate(savedInstanceState);
 
     }
 
@@ -69,17 +79,6 @@ public class SnippletActivity  extends Activity{
 
         }
 
-
-
-
-
-
-
-
-
-
-
-        //LinearLayout linearLayout = (LinearLayout)findViewById(R.id.layout);
 
 
 

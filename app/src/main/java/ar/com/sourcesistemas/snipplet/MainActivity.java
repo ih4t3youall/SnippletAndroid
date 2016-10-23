@@ -27,6 +27,26 @@ public class MainActivity extends AppCompatActivity  {
         databaseHandler = new DatabaseHandler(this,null,null,1);
         context = this;
         setContentView(R.layout.activity_main);
+        List<CategoriaDTO> categoriasDTO = databaseHandler.getAllCategoriasDTO();
+
+
+        List<Button> buttons = new LinkedList<Button>();
+
+        LinearLayout layout = (LinearLayout) findViewById(R.id.layout);
+        layout.removeAllViews();
+
+        for (CategoriaDTO categoriaDTO : categoriasDTO) {
+
+            Button button = new Button(context);
+            button.setText(categoriaDTO.getNombre());
+            SnippletLuncherListener snipletLuncherListener = new SnippletLuncherListener(getApplicationContext(),categoriaDTO.getNombre());
+            button.setOnClickListener(snipletLuncherListener);
+
+
+            layout.addView(button);
+
+        }
+        databaseHandler.closeDatabase();
 
     }
 
@@ -72,7 +92,7 @@ public class MainActivity extends AppCompatActivity  {
     public void onResume() {
         super.onResume();
 
-        List<CategoriaDTO> categoriasDTO = databaseHandler.getAllCategoriasDTO();
+        /*List<CategoriaDTO> categoriasDTO = databaseHandler.getAllCategoriasDTO();
 
 
         List<Button> buttons = new LinkedList<Button>();
@@ -91,6 +111,8 @@ public class MainActivity extends AppCompatActivity  {
             layout.addView(button);
 
         }
+        databaseHandler.closeDatabase();
+        */
 
 
 
