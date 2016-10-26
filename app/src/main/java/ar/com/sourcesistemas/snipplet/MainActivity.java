@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity  {
             layout.addView(button);
 
         }
-        databaseHandler.closeDatabase();
+
 
     }
 
@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity  {
         getMenuInflater().inflate(R.menu.menu_search, menu);
 
         MenuItem add = menu.findItem(R.id.add);
+
         add.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
@@ -74,14 +75,25 @@ public class MainActivity extends AppCompatActivity  {
             public boolean onMenuItemClick(MenuItem item) {
 
                 Intent intent = new Intent(getApplicationContext(), AdministrarNubeActivity.class);
-                //pasar parametros
-
                 startActivity(intent);
 
                 return false;
             }
         });
 
+        MenuItem preferences = menu.findItem(R.id.preferences);
+        preferences.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener(){
+
+
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+
+                Intent intent = new Intent(getApplicationContext(),PreferencesActivity.class);
+                startActivity(intent);
+
+                return false;
+            }
+        });
 
 
         return true;
@@ -91,6 +103,29 @@ public class MainActivity extends AppCompatActivity  {
 
     public void onResume() {
         super.onResume();
+
+
+
+        List<CategoriaDTO> categoriasDTO = databaseHandler.getAllCategoriasDTO();
+
+
+        List<Button> buttons = new LinkedList<Button>();
+
+        LinearLayout layout = (LinearLayout) findViewById(R.id.layout);
+        layout.removeAllViews();
+
+        for (CategoriaDTO categoriaDTO : categoriasDTO) {
+
+            Button button = new Button(context);
+            button.setText(categoriaDTO.getNombre());
+            SnippletLuncherListener snipletLuncherListener = new SnippletLuncherListener(getApplicationContext(),categoriaDTO.getNombre());
+            button.setOnClickListener(snipletLuncherListener);
+
+
+            layout.addView(button);
+
+        }
+
 
         /*List<CategoriaDTO> categoriasDTO = databaseHandler.getAllCategoriasDTO();
 

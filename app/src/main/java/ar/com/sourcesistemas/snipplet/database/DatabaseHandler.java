@@ -9,6 +9,7 @@ import android.database.Cursor;
 import java.util.LinkedList;
 import java.util.List;
 
+import ar.com.sourcesistemas.snipplet.domain.Preferences;
 import ar.com.sourcesistemas.snipplet.domain.Snipplet;
 import ar.com.sourcesistemas.snipplet.dto.CategoriaDTO;
 
@@ -18,13 +19,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "Snipplet.db";
     private static final String TABLE_CATEGORIA = "categoria";
     private static final String TABLE_SNIPPLET = "snipplet";
+    private static final String TABLE_PREFERENCES="preferences";
 
     public static final String COLUMN_ID = "_id";
 
     private SQLiteDatabase db;
 
     public DatabaseHandler(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
-        super(context, DATABASE_NAME, factory, DATABASE_VERSION);
+        super(context, DATABASE_NAME, factory, 5);
 
 
         this.db = this.getWritableDatabase();
@@ -38,6 +40,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         String CREATE_SNIPPLET_TABLE=" CREATE TABLE `snipplet` (  `id`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,   `titulo`	TEXT,    `contenido`	TEXT,`id_categoria` INTEGER    )";
 
+        String CREATE_PREFERENCES_TABLE=" CREATE TABLE `preferences` (  `id`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,   `username`	TEXT,    `password`	TEXT,`url` TEXT    )";
+
         String CREATE_CATEGORIA_TABLE = "CREATE TABLE `categoria` (  `id`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,`nombre`	TEXT UNIQUE, `tags`	INTEGER )";
 
         String CARETE_TAGS_TABLE ="CREATE TABLE `tags` (   `id`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,  `nombre`	TEXT UNIQUE  )";
@@ -49,9 +53,47 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.execSQL(CREATE_CATEGORIA_TABLE);
         db.execSQL(CARETE_TAGS_TABLE);
         db.execSQL(CREATE_CATEGORIATAG_TABLE);
-        db.close();
+        db.execSQL(CREATE_PREFERENCES_TABLE);
+
     }
 
+
+
+    public Preferences getPreferences(){
+
+        Preferences preferences = null;
+
+        String sql ="SELECT * FROM "+TABLE_PREFERENCES;
+        Cursor cursor = db.rawQuery(sql,null);
+        if(cursor.moveToFirst()) {
+            preferences = new Preferences();
+            preferences.setId(cursor.getLong(0));
+            preferences.setUsername(cursor.getString(1));
+            preferences.setPasswd(cursor.getString(2));
+            preferences.setUri(cursor.getString(3));
+        }
+
+        cursor.close();
+
+        return preferences;
+
+    }
+
+    public void savePreferences(Preferences preferences){
+
+        ContentValues contentValues  = new ContentValues();
+
+        contentValues.put("username",preferences.getUsername());
+        contentValues.put("password",preferences.getPasswd());
+        contentValues.put("url",preferences.getUri());
+        int nose = db.update(TABLE_PREFERENCES, contentValues, "id="+preferences.getId(), null);
+        if(nose == 0){
+
+            db.insert(TABLE_PREFERENCES,null,contentValues);
+        }
+
+
+    }
 
 
     public void addCategoria(CategoriaDTO categoriaDTO) {
@@ -151,7 +193,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         }
         cursor.close();
-        db.close();
+
 
 
         return categoriasDTO;
@@ -210,7 +252,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion,
                           int newVersion) {
-
+        if(newVersion > oldVersion) {
+            String CREATE_PREFERENCES_TABLE = " CREATE TABLE `preferences` (  `id`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,   `username`	TEXT,    `password`	TEXT,`url` TEXT    )";
+            db.execSQL(CREATE_PREFERENCES_TABLE);
+        }
     }
 
 

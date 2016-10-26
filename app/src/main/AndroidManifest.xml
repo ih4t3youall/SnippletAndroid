@@ -22,6 +22,8 @@
         <activity android:name=".AdministrarNubeActivity"></activity>
         <activity android:name=".EditSnippletActivity"></activity>
         <activity android:name=".CreateNewSnippletActivity"></activity>
+        <activity android:name=".PreferencesActivity"></activity>
+
 
 
 
