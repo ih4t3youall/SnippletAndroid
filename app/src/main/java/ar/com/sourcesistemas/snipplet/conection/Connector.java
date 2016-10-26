@@ -1,23 +1,23 @@
 package ar.com.sourcesistemas.snipplet.conection;
 
 import android.content.Context;
-import android.util.Log;
-import android.widget.Button;
+
+
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
+
 
 
 import ar.com.sourcesistemas.snipplet.AdministrarNubeActivity;
-import ar.com.sourcesistemas.snipplet.MainActivity;
+
 import ar.com.sourcesistemas.snipplet.database.DatabaseHandler;
-import ar.com.sourcesistemas.snipplet.domain.UserConfiguration;
+import ar.com.sourcesistemas.snipplet.domain.Preferences;
+
 import ar.com.sourcesistemas.snipplet.dto.CategoriaDTO;
 
 import ar.com.sourcesistemas.snipplet.dto.SendDTO;
@@ -38,11 +38,12 @@ private Context context;
     final OkHttpClient client = new OkHttpClient();
     private String[] directorios = null;
     private DatabaseHandler databaseHandler;
+    private Preferences preferences;
 
     public Connector(Context context){
 
         databaseHandler = new DatabaseHandler(context,null,null,1);
-
+        preferences = databaseHandler.getPreferences();
     }
 
 
@@ -52,13 +53,11 @@ private Context context;
 
         MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
-        UserConfiguration userConfiguration = configurationService.getUserConfiguration();
-        userConfiguration = new UserConfiguration();
-        userConfiguration.setUsername("martin");
-        userConfiguration.setPassword("nada");
+
+
         SendDTO send = new SendDTO();
-        send.setUsername(userConfiguration.getUsername());
-        send.setPassword(userConfiguration.getPassword());
+        send.setUsername(preferences.getUsername());
+        send.setPassword(preferences.getPasswd());
 
 
         final ObjectMapper mapper = new ObjectMapper();
@@ -105,8 +104,9 @@ private Context context;
         String url = configurationService.getUri() + "deleteCategory";
 
         SendDTO send = new SendDTO();
-        UserConfiguration userConfiguration = configurationService.getUserConfiguration();
-        send.setUsername("martin");
+
+        send.setUsername(preferences.getUsername());
+        send.setPassword(preferences.getPasswd());
         send.setCategoriaDTO(categoriaDTO);
 
 
@@ -154,8 +154,9 @@ private Context context;
         recuperarGuardado.setNombre(nombreCategoria);
 
         SendDTO send = new SendDTO();
-        UserConfiguration userConfiguration = configurationService.getUserConfiguration();
-        send.setUsername("martin");
+
+        send.setUsername(preferences.getUsername());
+        send.setPassword(preferences.getPasswd());
         send.setCategoriaDTO(recuperarGuardado);
 
         MediaType JSON = MediaType.parse("application/json; charset=utf-8");
@@ -204,10 +205,10 @@ private Context context;
     public String sendToServer(CategoriaDTO categoriaDTO) throws IOException {
         String url = configurationService.getUri() + "guardarCategoria";
 
-        UserConfiguration userConfiguration = configurationService.getUserConfiguration();
+
         SendDTO send = new SendDTO();
-        send.setUsername("martin");
-        send.setPassword("martin");
+        send.setUsername(preferences.getUsername());
+        send.setPassword(preferences.getPasswd());
         send.setCategoriaDTO(categoriaDTO);
 
         MediaType JSON = MediaType.parse("application/json; charset=utf-8");

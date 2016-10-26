@@ -21,15 +21,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String TABLE_SNIPPLET = "snipplet";
     private static final String TABLE_PREFERENCES="preferences";
 
+
     public static final String COLUMN_ID = "_id";
 
     private SQLiteDatabase db;
+
 
     public DatabaseHandler(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, DATABASE_NAME, factory, 5);
 
 
         this.db = this.getWritableDatabase();
+
     }
 
     @Override
