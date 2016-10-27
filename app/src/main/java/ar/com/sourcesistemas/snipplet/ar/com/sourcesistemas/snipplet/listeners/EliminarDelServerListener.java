@@ -8,6 +8,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.io.IOException;
 
+import ar.com.sourcesistemas.snipplet.AdministrarNubeActivity;
 import ar.com.sourcesistemas.snipplet.conection.Connector;
 import ar.com.sourcesistemas.snipplet.database.DatabaseHandler;
 import ar.com.sourcesistemas.snipplet.dto.CategoriaDTO;
@@ -38,6 +39,7 @@ public class EliminarDelServerListener implements View.OnClickListener {
     public void onClick(View v) {
            try {
             connector.deleteFromServer(categoriaDTO);
+            ((AdministrarNubeActivity)context).inicio();
         } catch (JsonProcessingException e) {
             Toast.makeText(context, "Error al eliminar la categoria del servidor", Toast.LENGTH_SHORT).show();
             e.printStackTrace();

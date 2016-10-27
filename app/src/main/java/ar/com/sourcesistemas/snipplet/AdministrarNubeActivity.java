@@ -29,6 +29,14 @@ public class AdministrarNubeActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+
+        inicio();
+
+
+    }
+
+    public void inicio(){
+
         databaseHandler = new DatabaseHandler(this,null,null,1);
         context = this;
         setContentView(R.layout.administrar_nube);
@@ -54,8 +62,6 @@ public class AdministrarNubeActivity extends Activity {
         }
         upload.setOnClickListener(new ButtonUploadListener(this));
 
-
-
     }
 
     public void setLista(final String[] directorios,final int eliminar) {
@@ -64,6 +70,7 @@ public class AdministrarNubeActivity extends Activity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                linearLayout.removeAllViews();
                 for (String string : directorios) {
                     Button button = new Button(context);
                     button.setText(string);

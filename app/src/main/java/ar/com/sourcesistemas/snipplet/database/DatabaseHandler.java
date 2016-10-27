@@ -95,7 +95,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         contentValues.put("url",preferences.getUri());
         int nose = db.update(TABLE_PREFERENCES, contentValues, "id="+preferences.getId(), null);
         if(nose == 0){
-
             db.insert(TABLE_PREFERENCES,null,contentValues);
         }
 
