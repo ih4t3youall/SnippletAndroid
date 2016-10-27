@@ -102,29 +102,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     }
 
-    public CategoriaDTO getCategoriaByCategoriaId(Snipplet snipplet){
 
-
-
-    }
 
     public void deleteSnipplet(Snipplet snipplet){
 
-
         snipplet = getSnippletBySnippletId(snipplet);
-
-        categoriaDTO = getCategoriaDTO(categoriaDTO.getNombre());
-
-        String table = TABLE_CATEGORIA;
+        String table = TABLE_SNIPPLET;
         String whereClause = "id=?";
-        String[] whereArgs = new String[] { String.valueOf(categoriaDTO.getIdCategoria()) };
+        String[] whereArgs = new String[] { String.valueOf(snipplet.getId()) };
         db.delete(table, whereClause, whereArgs);
-
-        table = TABLE_SNIPPLET;
-        whereClause = "id_categoria=?";
-        whereArgs = new String[] { String.valueOf(categoriaDTO.getIdCategoria()) };
-        db.delete(table, whereClause, whereArgs);
-
 
     }
 
@@ -193,6 +179,22 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     }
 
+
+    public void deleteCategoria(CategoriaDTO categoriaDTO) {
+
+        categoriaDTO = getCategoriaDTO(categoriaDTO.getNombre());
+
+        String table = TABLE_CATEGORIA;
+        String whereClause = "id=?";
+        String[] whereArgs = new String[] { String.valueOf(categoriaDTO.getIdCategoria()) };
+        db.delete(table, whereClause, whereArgs);
+
+
+        table = TABLE_SNIPPLET;
+        whereClause = "id_categoria=?";
+         whereArgs = new String[] { String.valueOf(categoriaDTO.getIdCategoria()) };
+        db.delete(table, whereClause, whereArgs);
+    }
 
 
     public void addSnipplets(CategoriaDTO categoriaDTO){
@@ -340,5 +342,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close();
 
     }
+
 
 }

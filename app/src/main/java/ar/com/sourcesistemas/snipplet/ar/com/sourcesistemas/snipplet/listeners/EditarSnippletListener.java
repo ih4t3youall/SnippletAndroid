@@ -19,10 +19,12 @@ public class EditarSnippletListener implements View.OnClickListener {
     private Context context;
     private Snipplet snipplet;
 
+
     public EditarSnippletListener(Context context, Snipplet snipplet){
 
         this.context = context;
         this.snipplet = snipplet;
+
 
     }
 
@@ -32,6 +34,7 @@ public class EditarSnippletListener implements View.OnClickListener {
 
         Intent intent = new Intent(context, EditSnippletActivity.class);
         intent.putExtra("snipplet", snipplet);
+
 
         context.startActivity(intent);
 

@@ -8,12 +8,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Toast;
+
 
 import java.util.ArrayList;
 import java.util.List;
 
 import ar.com.sourcesistemas.snipplet.ar.com.sourcesistemas.snipplet.listeners.AddButtonActionListener;
+import ar.com.sourcesistemas.snipplet.ar.com.sourcesistemas.snipplet.listeners.DeleteCategoryListener;
 import ar.com.sourcesistemas.snipplet.ar.com.sourcesistemas.snipplet.listeners.EditarSnippletListener;
 import ar.com.sourcesistemas.snipplet.database.DatabaseHandler;
 import ar.com.sourcesistemas.snipplet.domain.Snipplet;
@@ -44,9 +45,15 @@ public class SnippletActivity  extends Activity{
         context = this;
         setContentView(R.layout.snipplet_container);
         String nombre = getIntent().getExtras().getString("nombre");
-        getSnipplets(nombre);
+        CategoriaDTO categoriaDTO = databaseHandler.getCategoriaDTO(nombre);
+        getSnipplets(categoriaDTO);
+
         Button  add = (Button)findViewById(R.id.add);
         add.setOnClickListener(new AddButtonActionListener(this,new CategoriaDTO(nombre)));
+
+        Button  deleteCategory = (Button)findViewById(R.id.deleteCategory);
+
+        deleteCategory.setOnClickListener(new DeleteCategoryListener(this,categoriaDTO));
 
     }
 
@@ -57,9 +64,9 @@ public class SnippletActivity  extends Activity{
     }
 
 
-    public void getSnipplets(String nombre){
+    public void getSnipplets(CategoriaDTO categoriaDTO){
 
-        CategoriaDTO categoriaDTO = databaseHandler.getCategoriaDTO(nombre);
+
 
         databaseHandler.getSnipplet(categoriaDTO);
         LayoutInflater inflater = LayoutInflater.from(context);

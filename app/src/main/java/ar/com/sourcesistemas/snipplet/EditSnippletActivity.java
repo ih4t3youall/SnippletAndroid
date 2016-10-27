@@ -38,6 +38,7 @@ public class EditSnippletActivity extends Activity {
 
         this.snipplet= (Snipplet)getIntent().getExtras().get("snipplet");
 
+
         databaseHandler = new DatabaseHandler(this,null,null,1);
         context = this;
         setContentView(R.layout.edit_snipplet);

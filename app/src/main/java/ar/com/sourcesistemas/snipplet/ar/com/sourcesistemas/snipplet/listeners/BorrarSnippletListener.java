@@ -17,11 +17,13 @@ public class BorrarSnippletListener implements View.OnClickListener {
     private DatabaseHandler databaseHandler;
     private Snipplet snipplet;
 
+
     public BorrarSnippletListener(Context context,Snipplet snipplet){
 
         this.context = context;
         databaseHandler = new DatabaseHandler(context,null,null,6);
         this.snipplet = snipplet;
+
 
 
     }
