@@ -24,7 +24,7 @@ public class DescargarDeNubeListener implements View.OnClickListener{
 
 
 
-    public DescargarDeNubeListener(String nombreCategoria,Context context){
+    public DescargarDeNubeListener(String nombreCategoria,Context context) throws Exception {
 
         this.nombreCategoria = nombreCategoria;
         this.connector = new Connector(context);

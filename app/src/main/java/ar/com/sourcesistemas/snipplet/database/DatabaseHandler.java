@@ -35,6 +35,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     }
 
+
+
+
+
     @Override
     public void onCreate(SQLiteDatabase db) {
 
@@ -97,6 +101,35 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 
     }
+
+    public CategoriaDTO getCategoriaByCategoriaId(Snipplet snipplet){
+
+
+
+    }
+
+    public void deleteSnipplet(Snipplet snipplet){
+
+
+        snipplet = getSnippletBySnippletId(snipplet);
+
+        categoriaDTO = getCategoriaDTO(categoriaDTO.getNombre());
+
+        String table = TABLE_CATEGORIA;
+        String whereClause = "id=?";
+        String[] whereArgs = new String[] { String.valueOf(categoriaDTO.getIdCategoria()) };
+        db.delete(table, whereClause, whereArgs);
+
+        table = TABLE_SNIPPLET;
+        whereClause = "id_categoria=?";
+        whereArgs = new String[] { String.valueOf(categoriaDTO.getIdCategoria()) };
+        db.delete(table, whereClause, whereArgs);
+
+
+    }
+
+
+
 
 
     public void addCategoria(CategoriaDTO categoriaDTO) {
@@ -227,6 +260,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     }
 
+    public Snipplet getSnippletBySnippletId(Snipplet snipplet){
+
+        String query = "Select * FROM " + TABLE_SNIPPLET + " WHERE id=  \"" + snipplet.getId() + "\"";
+
+
+
+        Cursor cursor = db.rawQuery(query, null);
+        cursor.moveToFirst();
+        return new Snipplet(cursor.getLong(0),cursor.getString(1),cursor.getString(2));
+
+    }
+
 
     public CategoriaDTO getSnipplet(CategoriaDTO categoriaDTO){
         String query = "Select * FROM " + TABLE_SNIPPLET + " WHERE id_categoria =  \"" + categoriaDTO.getIdCategoria() + "\"";
@@ -256,8 +301,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion,
                           int newVersion) {
         if(newVersion > oldVersion) {
-            String CREATE_PREFERENCES_TABLE = " CREATE TABLE `preferences` (  `id`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,   `username`	TEXT,    `password`	TEXT,`url` TEXT    )";
-            db.execSQL(CREATE_PREFERENCES_TABLE);
+            //String CREATE_PREFERENCES_TABLE = " CREATE TABLE `preferences` (  `id`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,   `username`	TEXT,    `password`	TEXT,`url` TEXT    )";
+            //db.execSQL(CREATE_PREFERENCES_TABLE);
         }
     }
 

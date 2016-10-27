@@ -21,7 +21,8 @@ import ar.com.sourcesistemas.snipplet.domain.Preferences;
 import ar.com.sourcesistemas.snipplet.dto.CategoriaDTO;
 
 import ar.com.sourcesistemas.snipplet.dto.SendDTO;
-import ar.com.sourcesistemas.snipplet.services.ConfigurationService;
+
+import ar.com.sourcesistemas.snipplet.exception.NalgasException;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
@@ -34,22 +35,27 @@ public class Connector {
 private Context context;
 
 
-    ConfigurationService configurationService = new ConfigurationService();
+
     final OkHttpClient client = new OkHttpClient();
     private String[] directorios = null;
     private DatabaseHandler databaseHandler;
     private Preferences preferences;
 
-    public Connector(Context context){
+    public Connector(Context context) throws Exception {
 
         databaseHandler = new DatabaseHandler(context,null,null,1);
         preferences = databaseHandler.getPreferences();
-    }
+            if(preferences == null){
+                throw new NalgasException(context);
+
+            }
+
+        }
 
 
     public String[] list(final LinearLayout linearLayout,final AdministrarNubeActivity context,final int eliminar) throws IOException {
-        configurationService = new ConfigurationService();
-        String url = configurationService.getUri() + "listarServer";
+
+        String url = preferences.getUri() + "listarServer";
 
         MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
@@ -101,7 +107,7 @@ private Context context;
 
 
     public void deleteFromServer(CategoriaDTO categoriaDTO) throws IOException {
-        String url = configurationService.getUri() + "deleteCategory";
+        String url = preferences.getUri() + "deleteCategory";
 
         SendDTO send = new SendDTO();
 
@@ -149,7 +155,7 @@ private Context context;
 
     public CategoriaDTO getFromServer(String nombreCategoria) throws IOException {
 
-        String url = configurationService.getUri() + "returnCategory";
+        String url = preferences.getUri() + "returnCategory";
         CategoriaDTO recuperarGuardado = new CategoriaDTO();
         recuperarGuardado.setNombre(nombreCategoria);
 
@@ -183,11 +189,8 @@ private Context context;
                 }
 
                 String responseBody = response.body().string();
-
                 CategoriaDTO categoriaDTO = mapper.readValue(responseBody, CategoriaDTO.class);
-                System.out.println("categoria nombre: "+categoriaDTO.getNombre());
                 databaseHandler.addCategoria(categoriaDTO);
-                System.out.println("categoria primer snipplet : "+categoriaDTO.getSnipplets().get(0).getTitulo());
                 databaseHandler.addSnipplets(categoriaDTO);
 
 
@@ -203,7 +206,7 @@ private Context context;
 
 
     public String sendToServer(CategoriaDTO categoriaDTO) throws IOException {
-        String url = configurationService.getUri() + "guardarCategoria";
+        String url = preferences.getUri() + "guardarCategoria";
 
 
         SendDTO send = new SendDTO();

@@ -19,11 +19,14 @@ public class BorrarNubeListener implements View.OnClickListener {
     private CategoriaDTO categoriaDTO;
     private Connector connector;
 
-    public BorrarNubeListener(Context context,String categoria){
+    public BorrarNubeListener(Context context,String categoria) throws Exception {
 
         this.context = context;
         this.categoriaDTO = new CategoriaDTO(categoria);
-        this.connector = new Connector(context);
+
+
+            this.connector = new Connector(context);
+
 
     }
 

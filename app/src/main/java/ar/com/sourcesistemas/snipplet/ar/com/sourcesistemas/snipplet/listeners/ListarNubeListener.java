@@ -18,16 +18,18 @@ public class ListarNubeListener implements View.OnClickListener {
 
     private AdministrarNubeActivity context;
     private LinearLayout linearLayout;
-    public ListarNubeListener(AdministrarNubeActivity context){
+    private Connector connector;
+    public ListarNubeListener(AdministrarNubeActivity context) throws Exception {
         this.linearLayout = linearLayout;
        this.context = context;
+        connector = new Connector(context);
     }
 
 
     @Override
     public void onClick(View v) {
 
-        Connector connector = new Connector(context);
+
         String[] files=null ;
 
         try {

@@ -20,17 +20,25 @@ public class ButtonEliminarSnippletListener implements View.OnClickListener {
 
     private AdministrarNubeActivity context;
     private LinearLayout linearLayout;
-    public ButtonEliminarSnippletListener(AdministrarNubeActivity context){
-        this.linearLayout = linearLayout;
+    private Connector connector = null;
+    public ButtonEliminarSnippletListener(AdministrarNubeActivity context) throws Exception {
+
         this.context = context;
+
+            connector = new Connector(context);
+
     }
 
 
     @Override
     public void onClick(View v) {
 
-        Connector connector = new Connector(context);
+
+
+
+
         String[] files=null ;
+
 
         try {
             files = connector.list(linearLayout,context,0);

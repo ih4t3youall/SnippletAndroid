@@ -30,6 +30,7 @@ public class UpdatePreferencesListener implements OnClickListener {
         this.password = password;
         this.url = url;
         this.databaseHandler = new DatabaseHandler(context,null,null,1);
+        this.context = context;
 
     }
 

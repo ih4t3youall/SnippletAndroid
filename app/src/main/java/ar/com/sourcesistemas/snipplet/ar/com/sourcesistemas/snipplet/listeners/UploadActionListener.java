@@ -21,7 +21,7 @@ public class UploadActionListener implements View.OnClickListener {
     private Connector connector;
     private DatabaseHandler databaseHandler;
 
-    public UploadActionListener(Context applicationContext, String nombre) {
+    public UploadActionListener(Context applicationContext, String nombre) throws Exception {
         this.context = applicationContext;
         this.nombre = nombre;
         this.connector = new Connector(applicationContext);

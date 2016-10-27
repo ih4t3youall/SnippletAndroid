@@ -25,7 +25,7 @@ public class EliminarDelServerListener implements View.OnClickListener {
 
 
 
-    public EliminarDelServerListener(String nombreCategoria,Context context){
+    public EliminarDelServerListener(String nombreCategoria,Context context) throws Exception {
 
         this.categoriaDTO = new CategoriaDTO(nombreCategoria);
         this.connector = new Connector(context);

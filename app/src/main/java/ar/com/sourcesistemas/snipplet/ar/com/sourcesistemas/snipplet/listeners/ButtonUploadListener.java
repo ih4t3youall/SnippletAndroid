@@ -45,8 +45,12 @@ public class ButtonUploadListener implements View.OnClickListener {
 
             Button button = new Button(context);
             button.setText(categoriaDTO.getNombre());
-            //SnippletLuncherListener snipletLuncherListener = new SnippletLuncherListener(getApplicationContext(),categoriaDTO.getNombre());
-            button.setOnClickListener(new UploadActionListener(context.getApplicationContext(),categoriaDTO.getNombre()));
+
+            try {
+                button.setOnClickListener(new UploadActionListener(context.getApplicationContext(),categoriaDTO.getNombre()));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
 
             layout.addView(button);

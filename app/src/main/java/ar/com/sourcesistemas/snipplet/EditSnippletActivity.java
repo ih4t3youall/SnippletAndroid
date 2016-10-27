@@ -10,6 +10,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import ar.com.sourcesistemas.snipplet.ar.com.sourcesistemas.snipplet.listeners.BorrarSnippletListener;
+import ar.com.sourcesistemas.snipplet.ar.com.sourcesistemas.snipplet.listeners.ButtonEliminarSnippletListener;
 import ar.com.sourcesistemas.snipplet.ar.com.sourcesistemas.snipplet.listeners.EditarSnippletListener;
 import ar.com.sourcesistemas.snipplet.ar.com.sourcesistemas.snipplet.listeners.GuardarSnippletListener;
 import ar.com.sourcesistemas.snipplet.ar.com.sourcesistemas.snipplet.listeners.ListarNubeListener;
@@ -47,6 +49,9 @@ public class EditSnippletActivity extends Activity {
         guardar.setOnClickListener(new GuardarSnippletListener(context,snipplet,editText,textView));
 
 
+        Button borrarSnipplet = (Button)findViewById(R.id.borrarSnipplet);
+
+            borrarSnipplet.setOnClickListener(new BorrarSnippletListener(context,snipplet));
 
 
 

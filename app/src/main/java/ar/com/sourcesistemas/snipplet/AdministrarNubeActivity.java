@@ -2,9 +2,11 @@ package ar.com.sourcesistemas.snipplet;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import ar.com.sourcesistemas.snipplet.ar.com.sourcesistemas.snipplet.listeners.ButtonUploadListener;
 import ar.com.sourcesistemas.snipplet.ar.com.sourcesistemas.snipplet.listeners.DescargarDeNubeListener;
@@ -39,8 +41,17 @@ public class AdministrarNubeActivity extends Activity {
 
         linearLayout = (LinearLayout)findViewById(R.id.layoutLista);
 
-        listar.setOnClickListener(new ListarNubeListener(this));
-        borrar.setOnClickListener(new ButtonEliminarSnippletListener(this));
+
+        try {
+            listar.setOnClickListener(new ListarNubeListener(this));
+            borrar.setOnClickListener(new ButtonEliminarSnippletListener(this));
+        } catch (Exception e) {
+            Toast.makeText(context, "No hay configuracion de usuario", Toast.LENGTH_SHORT).show();
+            Intent in = new Intent(context, MainActivity.class);
+
+            startActivity(in);
+            setResult(Activity.RESULT_OK);
+        }
         upload.setOnClickListener(new ButtonUploadListener(this));
 
 
@@ -50,32 +61,40 @@ public class AdministrarNubeActivity extends Activity {
     public void setLista(final String[] directorios,final int eliminar) {
 
 
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    for (String string:directorios ) {
-                        Button button = new Button(context);
-                        button.setText(string);
-                        linearLayout.addView(button);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                for (String string : directorios) {
+                    Button button = new Button(context);
+                    button.setText(string);
+                    linearLayout.addView(button);
 
 
+                    try {
+                        switch (eliminar) {
 
-                        switch (eliminar){
-
-                           case 0: button.setOnClickListener(new EliminarDelServerListener(string,context));
-                               break;
+                            case 0:
+                                button.setOnClickListener(new EliminarDelServerListener(string, context));
+                                break;
                             case 1:
+
                                 button.setOnClickListener(new DescargarDeNubeListener(string, context));
-                               break;
+
+                                break;
                         }
 
 
+                    } catch (Exception e) {
+                        Toast.makeText(context, "No hay configuracion de usuario", Toast.LENGTH_SHORT).show();
+                        Intent in = new Intent(context, MainActivity.class);
 
+                        startActivity(in);
+                        setResult(Activity.RESULT_OK);
                     }
 
-
                 }
-            });
+            }
+        });
 
 
 
