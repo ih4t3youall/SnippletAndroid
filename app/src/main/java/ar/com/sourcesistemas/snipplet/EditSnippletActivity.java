@@ -1,9 +1,12 @@
 package ar.com.sourcesistemas.snipplet;
 
 import android.app.Activity;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -43,7 +46,7 @@ public class EditSnippletActivity extends Activity {
         context = this;
         setContentView(R.layout.edit_snipplet);
         EditText editText = (EditText)findViewById(R.id.titulo);
-        TextView textView = (TextView)findViewById(R.id.contenido);
+        final TextView textView = (TextView)findViewById(R.id.contenido);
         editText.setText(snipplet.getTitulo());
         textView.setText(snipplet.getContenido());
         Button guardar = (Button)findViewById(R.id.guardar);
@@ -52,7 +55,20 @@ public class EditSnippletActivity extends Activity {
 
         Button borrarSnipplet = (Button)findViewById(R.id.borrarSnipplet);
 
-            borrarSnipplet.setOnClickListener(new BorrarSnippletListener(context,snipplet));
+        borrarSnipplet.setOnClickListener(new BorrarSnippletListener(context,snipplet));
+
+        Button copy = (Button)findViewById(R.id.copy);
+        copy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+                ClipData clip = ClipData.newPlainText(snipplet.getTitulo(), textView.getText().toString());
+                clipboard.setPrimaryClip(clip);
+
+
+            }
+        });
 
 
 

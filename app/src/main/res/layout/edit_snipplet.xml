@@ -15,6 +15,12 @@
         android:layout_height="wrap_content"
         android:id="@+id/borrarSnipplet" />
 
+    <Button
+        android:text="Copiar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/copy" />
+
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -38,11 +44,5 @@
              />
 
     </ScrollView>
-
-    <Button
-        android:text="Button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/button" />
 
 </LinearLayout>
