@@ -2,6 +2,7 @@ package ar.com.sourcesistemas.snipplet.ar.com.sourcesistemas.snipplet.listeners;
 
 import android.content.Context;
 import android.view.View;
+import android.widget.Toast;
 
 import java.io.IOException;
 
@@ -35,7 +36,9 @@ public class UploadActionListener implements View.OnClickListener {
         databaseHandler.getSnipplet(categoriaDTO);
         try {
             connector.sendToServer(categoriaDTO);
+            Toast.makeText(context, "Enviado al servidor.", Toast.LENGTH_SHORT).show();
         } catch (IOException e) {
+            Toast.makeText(context, "Error al enviar al servidor.", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
 

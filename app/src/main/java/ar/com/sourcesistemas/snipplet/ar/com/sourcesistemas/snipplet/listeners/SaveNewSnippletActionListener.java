@@ -2,6 +2,7 @@ package ar.com.sourcesistemas.snipplet.ar.com.sourcesistemas.snipplet.listeners;
 
 import android.content.Context;
 import android.view.View;
+import android.widget.Toast;
 
 import ar.com.sourcesistemas.snipplet.CreateNewSnippletActivity;
 import ar.com.sourcesistemas.snipplet.database.DatabaseHandler;
@@ -31,6 +32,7 @@ public class SaveNewSnippletActionListener implements View.OnClickListener {
         String titulo = context.getTitulo();
         String contenido = context.getContenido();
         databaseHandler.insertNewSnipplet(categoriaDTO,titulo,contenido);
+        Toast.makeText(context, "Se guardo el snipplet.", Toast.LENGTH_SHORT).show();
 
     }
 }

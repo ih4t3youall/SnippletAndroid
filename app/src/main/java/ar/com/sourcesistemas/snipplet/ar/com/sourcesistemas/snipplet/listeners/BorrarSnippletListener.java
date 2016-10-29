@@ -1,8 +1,11 @@
 package ar.com.sourcesistemas.snipplet.ar.com.sourcesistemas.snipplet.listeners;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 
+import ar.com.sourcesistemas.snipplet.MainActivity;
 import ar.com.sourcesistemas.snipplet.database.DatabaseHandler;
 import ar.com.sourcesistemas.snipplet.domain.Snipplet;
 import ar.com.sourcesistemas.snipplet.dto.CategoriaDTO;
@@ -35,7 +38,7 @@ public class BorrarSnippletListener implements View.OnClickListener {
 
 
         databaseHandler.deleteSnipplet(snipplet);
-
+        ((Activity) context).finish();
 
 
 

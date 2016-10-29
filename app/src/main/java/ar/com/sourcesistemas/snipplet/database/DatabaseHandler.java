@@ -123,8 +123,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put("nombre", categoriaDTO.getNombre());
         values.put("tags", "null");
 
-
-
         long id = db.insert(TABLE_CATEGORIA, null, values);
         categoriaDTO.setIdCategoria(id);
 
@@ -137,9 +135,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         contentValues.put("titulo",snipplet.getTitulo());
         contentValues.put("contenido",snipplet.getContenido());
         db.update(TABLE_SNIPPLET, contentValues, "id="+snipplet.getId(), null);
-
-
-
 
 
     }
@@ -159,6 +154,24 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 
         return cursor.moveToFirst();
+
+    }
+
+    public List<Snipplet> getAllSnipplets(){
+
+        String sql ="SELECT * FROM "+TABLE_SNIPPLET;
+        Cursor cursor = db.rawQuery(sql,null);
+        List<Snipplet> snipplets = new LinkedList<Snipplet>();
+
+        while(cursor.moveToNext()){
+            Snipplet snipplet = new Snipplet();
+            snipplet.setId(cursor.getLong(0));
+            snipplet.setTitulo(cursor.getString(1));
+            snipplet.setContenido(cursor.getString(2));
+            snipplets.add(snipplet);
+        }
+
+        return snipplets;
 
     }
 
@@ -219,13 +232,17 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         String query = "Select * FROM " + TABLE_CATEGORIA ;
 
-
-
         Cursor cursor = db.rawQuery(query, null);
         List<CategoriaDTO> categoriasDTO = new LinkedList<CategoriaDTO>();
         while (cursor.moveToNext()){
 
-            categoriasDTO.add(new CategoriaDTO(cursor.getString(1)));
+            CategoriaDTO categoriaDTO = new CategoriaDTO(cursor.getString(1));
+            categoriaDTO.setIdCategoria(cursor.getLong(0));
+
+            List<Snipplet> snipplets = getSnippletsByCategoria(categoriaDTO.getIdCategoria());
+            categoriaDTO.setSnipplets(snipplets);
+            categoriasDTO.add(categoriaDTO);
+
 
 
         }
@@ -270,6 +287,28 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery(query, null);
         cursor.moveToFirst();
         return new Snipplet(cursor.getLong(0),cursor.getString(1),cursor.getString(2));
+
+    }
+
+
+    public List<Snipplet> getSnippletsByCategoria(long idCategoria){
+
+        String query = "Select * FROM " + TABLE_SNIPPLET + " WHERE id_categoria =  \"" + idCategoria + "\"";
+
+
+
+        Cursor cursor = db.rawQuery(query, null);
+
+
+        List<Snipplet> snipplets = new LinkedList<Snipplet>();
+        while (cursor.moveToNext()){
+
+            snipplets.add(new Snipplet(cursor.getLong(0),cursor.getString(1),cursor.getString(2)));
+
+
+        }
+        cursor.close();
+        return snipplets;
 
     }
 

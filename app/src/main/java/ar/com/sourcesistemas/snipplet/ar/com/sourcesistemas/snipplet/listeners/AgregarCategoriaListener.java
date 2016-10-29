@@ -1,9 +1,13 @@
 package ar.com.sourcesistemas.snipplet.ar.com.sourcesistemas.snipplet.listeners;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import ar.com.sourcesistemas.snipplet.MainActivity;
 import ar.com.sourcesistemas.snipplet.database.DatabaseHandler;
 import ar.com.sourcesistemas.snipplet.dto.CategoriaDTO;
 
@@ -30,10 +34,22 @@ public class AgregarCategoriaListener implements View.OnClickListener {
     public void onClick(View v) {
 
         CategoriaDTO categoriaDTO = new CategoriaDTO();
-        categoriaDTO.setNombre(editText.getText().toString());
+        String mensaje = editText.getText().toString();
+        if(!mensaje.equals("")) {
+            categoriaDTO.setNombre(editText.getText().toString());
 
-        databaseHandler.addCategoria(categoriaDTO);
+            databaseHandler.addCategoria(categoriaDTO);
 
+            Intent intent = new Intent(context, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            context.startActivity(intent);
+
+
+        }else{
+
+            Toast.makeText(context, "Debe escribir una categoria.", Toast.LENGTH_SHORT).show();
+
+        }
 
 
     }

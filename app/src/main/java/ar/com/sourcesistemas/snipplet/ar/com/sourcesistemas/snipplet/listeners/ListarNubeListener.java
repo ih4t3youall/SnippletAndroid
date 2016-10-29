@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import java.io.IOException;
 
@@ -35,6 +36,7 @@ public class ListarNubeListener implements View.OnClickListener {
         try {
             files = connector.list(linearLayout,context,1);
         } catch (IOException e) {
+            Toast.makeText(context, "Error al listar de la nube.", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
 

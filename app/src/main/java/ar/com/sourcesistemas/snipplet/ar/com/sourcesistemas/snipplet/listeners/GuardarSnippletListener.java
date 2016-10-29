@@ -35,12 +35,22 @@ public class GuardarSnippletListener implements View.OnClickListener {
     @Override
     public void onClick(View v) {
 
-        snipplet.setTitulo(editText.getText().toString());
-        snipplet.setContenido(textView.getText().toString());
+        String titulo = editText.getText().toString();
+        String contenido = textView.getText().toString();
+
+                if(!(titulo.equals("") && contenido.equals(""))){
+        snipplet.setTitulo(titulo);
+        snipplet.setContenido(contenido);
+
+
 
         databaseHandler.saveSnipplet(snipplet);
         Toast.makeText(context, snipplet.getTitulo()+" Guardado con exito", Toast.LENGTH_SHORT).show();
 
+                }else {
+                    Toast.makeText(context, "Tenes ques escribir un titulo y un contenido.", Toast.LENGTH_SHORT).show();
+
+                }
 
     }
 }

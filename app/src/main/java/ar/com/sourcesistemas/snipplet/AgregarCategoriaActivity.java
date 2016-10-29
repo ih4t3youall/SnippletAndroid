@@ -45,7 +45,9 @@ public class AgregarCategoriaActivity extends Activity {
                 Intent in = new Intent(context, MainActivity.class);
 
                 startActivity(in);
+
                 setResult(Activity.RESULT_OK);
+                finish();
 
             }
         });
