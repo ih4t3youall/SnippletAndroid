@@ -315,13 +315,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     public CategoriaDTO getSnipplet(CategoriaDTO categoriaDTO){
         String query = "Select * FROM " + TABLE_SNIPPLET + " WHERE id_categoria =  \"" + categoriaDTO.getIdCategoria() + "\"";
-
-
-
         Cursor cursor = db.rawQuery(query, null);
 
-
-    List<Snipplet> snipplets = new LinkedList<Snipplet>();
+        List<Snipplet> snipplets = new LinkedList<Snipplet>();
         while (cursor.moveToNext()){
 
             snipplets.add(new Snipplet(cursor.getLong(0),cursor.getString(1),cursor.getString(2)));

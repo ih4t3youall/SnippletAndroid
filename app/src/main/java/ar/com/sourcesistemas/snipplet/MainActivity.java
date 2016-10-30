@@ -39,11 +39,7 @@ public class MainActivity extends AppCompatActivity  {
         setContentView(R.layout.activity_main);
         this.categoriasDTO = databaseHandler.getAllCategoriasDTO();
 
-
-
-
         LinearLayout layout = (LinearLayout) findViewById(R.id.layout);
-
 
         layout.removeAllViews();
 
@@ -53,12 +49,9 @@ public class MainActivity extends AppCompatActivity  {
             button.setText(categoriaDTO.getNombre());
             SnippletLuncherListener snipletLuncherListener = new SnippletLuncherListener(getApplicationContext(),categoriaDTO.getNombre());
             button.setOnClickListener(snipletLuncherListener);
-
-
             layout.addView(button);
 
         }
-
 
     }
 
@@ -80,7 +73,6 @@ public class MainActivity extends AppCompatActivity  {
             }
         });
 
-
         MenuItem nube = menu.findItem(R.id.nube);
         nube.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
@@ -96,7 +88,6 @@ public class MainActivity extends AppCompatActivity  {
         MenuItem preferences = menu.findItem(R.id.preferences);
         preferences.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 
-
             @Override
             public boolean onMenuItemClick(MenuItem item) {
 
@@ -109,7 +100,6 @@ public class MainActivity extends AppCompatActivity  {
 
         MenuItem search = menu.findItem(R.id.search);
         search.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-
 
             @Override
             public boolean onMenuItemClick(MenuItem item) {
@@ -126,7 +116,6 @@ public class MainActivity extends AppCompatActivity  {
 
                 final EditText userInput = (EditText) promptsView
                         .findViewById(R.id.editTextDialogUserInput);
-
 
                 // set dialog message
                 alertDialogBuilder
@@ -153,19 +142,15 @@ public class MainActivity extends AppCompatActivity  {
                 // show it
                 alertDialog.show();
 
-
-
                 return false;
             }
         });
-
 
         return true;
     }
 
 
     public void buscar(String buscar){
-
 
         List<Snipplet> snipplets = databaseHandler.getAllSnipplets();
         List<Snipplet> resultados = new LinkedList<Snipplet>();
@@ -185,25 +170,19 @@ public class MainActivity extends AppCompatActivity  {
             Button button = new Button(context);
             button.setText(snipplet.getTitulo());
 
-            SearchSnippletListener snipletLuncherListener = new SearchSnippletListener(getApplicationContext(),snipplet);
+            SearchSnippletListener snipletLuncherListener = new SearchSnippletListener(this,snipplet);
             button.setOnClickListener(snipletLuncherListener);
-
 
             layout.addView(button);
 
         }
-
-
 
     }
 
     public void onResume() {
         super.onResume();
 
-
-
         List<CategoriaDTO> categoriasDTO = databaseHandler.getAllCategoriasDTO();
-
 
         List<Button> buttons = new LinkedList<Button>();
 
@@ -217,13 +196,10 @@ public class MainActivity extends AppCompatActivity  {
             SnippletLuncherListener snipletLuncherListener = new SnippletLuncherListener(getApplicationContext(),categoriaDTO.getNombre());
             button.setOnClickListener(snipletLuncherListener);
 
-
             layout.addView(button);
 
         }
 
-
     }
-
 
     }

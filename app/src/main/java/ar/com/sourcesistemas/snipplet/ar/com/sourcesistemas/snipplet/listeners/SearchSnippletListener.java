@@ -4,8 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.view.View;
 
+import ar.com.sourcesistemas.snipplet.MainActivity;
 import ar.com.sourcesistemas.snipplet.SearchResultActivity;
-import ar.com.sourcesistemas.snipplet.SnippletActivity;
+
 import ar.com.sourcesistemas.snipplet.domain.Snipplet;
 
 /**
@@ -29,9 +30,10 @@ public class SearchSnippletListener implements View.OnClickListener {
     public void onClick(View view) {
 
         Intent intent = new Intent(context, SearchResultActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.putExtra("snipplet", snipplet);
         context.startActivity(intent);
+
 
 
     }

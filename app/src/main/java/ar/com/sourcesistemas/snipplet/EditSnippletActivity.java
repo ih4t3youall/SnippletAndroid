@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import ar.com.sourcesistemas.snipplet.ar.com.sourcesistemas.snipplet.listeners.BorrarSnippletListener;
 import ar.com.sourcesistemas.snipplet.ar.com.sourcesistemas.snipplet.listeners.ButtonEliminarSnippletListener;
+import ar.com.sourcesistemas.snipplet.ar.com.sourcesistemas.snipplet.listeners.CopySnippletListener;
 import ar.com.sourcesistemas.snipplet.ar.com.sourcesistemas.snipplet.listeners.EditarSnippletListener;
 import ar.com.sourcesistemas.snipplet.ar.com.sourcesistemas.snipplet.listeners.GuardarSnippletListener;
 import ar.com.sourcesistemas.snipplet.ar.com.sourcesistemas.snipplet.listeners.ListarNubeListener;
@@ -58,7 +59,8 @@ public class EditSnippletActivity extends Activity {
         borrarSnipplet.setOnClickListener(new BorrarSnippletListener(context,snipplet));
 
         Button copy = (Button)findViewById(R.id.copy);
-        copy.setOnClickListener(new View.OnClickListener() {
+        copy.setOnClickListener(new CopySnippletListener(context,editText,textView));
+        /*copy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -68,7 +70,7 @@ public class EditSnippletActivity extends Activity {
 
 
             }
-        });
+        });*/
 
 
 
