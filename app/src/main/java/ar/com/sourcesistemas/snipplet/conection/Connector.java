@@ -10,7 +10,8 @@ import android.widget.Toast;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
-
+import java.util.LinkedList;
+import java.util.List;
 
 
 import ar.com.sourcesistemas.snipplet.AdministrarNubeActivity;
@@ -18,6 +19,7 @@ import ar.com.sourcesistemas.snipplet.AdministrarNubeActivity;
 import ar.com.sourcesistemas.snipplet.database.DatabaseHandler;
 import ar.com.sourcesistemas.snipplet.domain.Preferences;
 
+import ar.com.sourcesistemas.snipplet.domain.Snipplet;
 import ar.com.sourcesistemas.snipplet.dto.CategoriaDTO;
 
 import ar.com.sourcesistemas.snipplet.dto.SendDTO;
@@ -190,8 +192,19 @@ private Context context;
 
                 String responseBody = response.body().string();
                 CategoriaDTO categoriaDTO = mapper.readValue(responseBody, CategoriaDTO.class);
-                databaseHandler.addCategoria(categoriaDTO);
-                databaseHandler.addSnipplets(categoriaDTO);
+
+
+
+                CategoriaDTO categoriaDTOAux = databaseHandler.getCategoriaDTO(categoriaDTO.getNombre());
+
+                if(categoriaDTOAux == null) {
+                    databaseHandler.addCategoria(categoriaDTO);
+                    databaseHandler.addSnipplets(categoriaDTO);
+                }else{
+
+                    fusionarListas(categoriaDTO,categoriaDTOAux);
+
+                }
 
 
             }
@@ -201,6 +214,75 @@ private Context context;
 
 
         return new CategoriaDTO();
+
+    }
+
+    public void fusionarListas(CategoriaDTO server , CategoriaDTO local){
+
+        List<Snipplet> snippletList = new LinkedList<Snipplet>();
+
+        for (Snipplet snipplet: local.getSnipplets()  ) {
+
+        boolean flag = false;
+
+            for (Snipplet snippletS :server.getSnipplets()) {
+
+                if(snipplet.getTitulo().equals(snippletS.getTitulo())){
+
+                    snippletList.add(snippletS);
+                    flag =true;
+
+                }
+
+
+
+            }
+
+            if(!flag){
+
+                snippletList.add(snipplet);
+
+            }
+            flag = false;
+
+
+        }
+
+        List<Snipplet> snipletListAux = new LinkedList<Snipplet>();
+
+        for (Snipplet snipletAuxServer : server.getSnipplets()) {
+
+            boolean flag = false;
+                for (Snipplet snippletL: snippletList) {
+
+                    if(snipletAuxServer.getTitulo().equals(snippletL.getTitulo())){
+                        flag = true;
+
+                    }
+
+
+                }
+
+            if(!flag){
+                snipletListAux.add(snipletAuxServer);
+
+
+            }
+
+
+
+        }
+
+        for (Snipplet sniplet: snipletListAux) {
+            snippletList.add(sniplet);
+        }
+
+
+        for (Snipplet snipplet: snippletList
+             ) {
+            System.out.println(snipplet.getTitulo());
+
+        }
 
     }
 
