@@ -3,6 +3,10 @@ package ar.com.sourcesistemas.snipplet.domain;
         import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
         import java.io.Serializable;
+        import java.util.LinkedList;
+        import java.util.List;
+        import java.util.StringTokenizer;
+
 @JsonIgnoreProperties({"id"})
 public class Snipplet implements Serializable {
 
@@ -45,7 +49,7 @@ public class Snipplet implements Serializable {
         this.contenido = contenido;
     }
 
-    public boolean buscarTexto(String palabra) {
+    /*public boolean buscarTexto(String palabra) {
 
         if (contenido.trim().toLowerCase().indexOf(palabra.trim().toLowerCase()) != -1 || titulo.trim().toLowerCase().indexOf(palabra.trim().toLowerCase()) != -1) {
 
@@ -55,6 +59,51 @@ public class Snipplet implements Serializable {
             return false;
 
         }
+
+    }*/
+
+    public boolean buscarTexto(String palabrasAUX ){
+
+        StringTokenizer token = new StringTokenizer(palabrasAUX);
+        List<String> palabras = new LinkedList<String>();
+
+        while(token.hasMoreTokens()){
+            palabras.add(token.nextToken());
+        }
+
+
+
+        int cantidad = palabras.size();
+        int contador = 0;
+
+        for (String palabra :palabras ) {
+
+            boolean flag = false;
+            if(contenido.trim().toLowerCase().indexOf(palabra) != -1){
+                flag = true;
+
+            }
+            if(titulo.trim().toLowerCase().indexOf(palabra) != -1){
+                flag = true;
+
+            }
+
+            if(flag){
+                contador++;
+                flag = false;
+            }
+
+
+
+
+        }
+
+        if(contador == cantidad){
+            return true;
+        }else{
+            return false;
+        }
+
 
     }
 
