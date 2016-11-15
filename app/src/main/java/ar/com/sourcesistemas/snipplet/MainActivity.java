@@ -1,12 +1,13 @@
 package ar.com.sourcesistemas.snipplet;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Editable;
+
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,10 +15,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Toast;
+import android.widget.Switch;
+
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.StringTokenizer;
 
 import ar.com.sourcesistemas.snipplet.ar.com.sourcesistemas.snipplet.listeners.SearchSnippletListener;
 import ar.com.sourcesistemas.snipplet.database.DatabaseHandler;
@@ -58,7 +61,7 @@ public class MainActivity extends AppCompatActivity  {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_search, menu);
-        
+
         MenuItem add = menu.findItem(R.id.add);
 
         add.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
@@ -98,9 +101,11 @@ public class MainActivity extends AppCompatActivity  {
             }
         });
 
+
         MenuItem search = menu.findItem(R.id.search);
         search.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 
+            @SuppressLint("WrongViewCast")
             @Override
             public boolean onMenuItemClick(MenuItem item) {
 
@@ -108,14 +113,22 @@ public class MainActivity extends AppCompatActivity  {
                 LayoutInflater li = LayoutInflater.from(context);
                 View promptsView = li.inflate(R.layout.prompt, null);
 
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-                        context);
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
 
                 // set prompts.xml to alertdialog builder
                 alertDialogBuilder.setView(promptsView);
 
                 final EditText userInput = (EditText) promptsView
                         .findViewById(R.id.editTextDialogUserInput);
+
+
+                //Switch switch =(Switch) promptsView.findViewById(R.id.switch1);
+
+                final Switch toogle = (Switch) promptsView.findViewById(R.id.switch1);
+
+
+
+
 
                 // set dialog message
                 alertDialogBuilder
@@ -126,7 +139,17 @@ public class MainActivity extends AppCompatActivity  {
                                         // get user input and set it to result
                                         // edit text
 
+
+                                        Boolean buscarCategoria = toogle.isChecked();
+
+                                        if(buscarCategoria){
+
+                                         buscarCategoria(userInput.getText().toString());
+                                        }else{
                                         buscar(userInput.getText().toString());
+                                        }
+
+
                                     }
                                 })
                         .setNegativeButton("Cancel",
@@ -149,6 +172,37 @@ public class MainActivity extends AppCompatActivity  {
         return true;
     }
 
+
+    public void buscarCategoria(String buscar){
+
+
+       List<CategoriaDTO> categoriasDTO = databaseHandler.getAllCategoriasDTO();
+
+        StringTokenizer st = new StringTokenizer(buscar);
+
+        List<CategoriaDTO> categoriasSearch = new LinkedList<CategoriaDTO>();
+
+        while(st.hasMoreElements()){
+
+            String token = st.nextToken();
+
+            for (CategoriaDTO categoriaDTO : categoriasDTO  ) {
+
+                if(categoriaDTO.getNombre().trim().toLowerCase().indexOf(token) != -1){
+                    categoriasSearch.add(categoriaDTO);
+                }
+
+            }
+
+
+
+        }
+
+        reloadList(categoriasSearch);
+
+
+
+    }
 
     public void buscar(String buscar){
 
@@ -179,12 +233,30 @@ public class MainActivity extends AppCompatActivity  {
 
     }
 
+    public void reloadList(List<CategoriaDTO> nuevasCategoriasDTO){
+
+        this.categoriasDTO = nuevasCategoriasDTO;
+        LinearLayout layout = (LinearLayout) findViewById(R.id.layout);
+        layout.removeAllViews();
+
+        for (CategoriaDTO categoriaDTO : categoriasDTO) {
+
+            Button button = new Button(context);
+            button.setText(categoriaDTO.getNombre());
+            SnippletLuncherListener snipletLuncherListener = new SnippletLuncherListener(getApplicationContext(),categoriaDTO.getNombre());
+            button.setOnClickListener(snipletLuncherListener);
+
+            layout.addView(button);
+
+        }
+    }
+
     public void onResume() {
         super.onResume();
 
         List<CategoriaDTO> categoriasDTO = databaseHandler.getAllCategoriasDTO();
 
-        List<Button> buttons = new LinkedList<Button>();
+
 
         LinearLayout layout = (LinearLayout) findViewById(R.id.layout);
         layout.removeAllViews();

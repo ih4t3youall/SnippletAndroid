@@ -3,6 +3,9 @@ package ar.com.sourcesistemas.snipplet.conection;
 import android.content.Context;
 
 
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.util.Log;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -60,7 +63,6 @@ private Context context;
         MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
 
-
         SendDTO send = new SendDTO();
         send.setUsername(preferences.getUsername());
         send.setPassword(preferences.getPasswd());
@@ -76,6 +78,7 @@ private Context context;
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
+                Log.d("failure","failure");
                 e.printStackTrace();
             }
 
@@ -87,6 +90,7 @@ private Context context;
 
                 String responseBody = response.body().string();
 
+                Log.d("RESPUESTA",responseBody);
                 directorios = mapper.readValue(responseBody, String[].class);
 
                 context.setLista(directorios,eliminar);
@@ -179,12 +183,15 @@ private Context context;
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
+
+                Toast.makeText(context, "Error al conectarse al servidor.", Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
             }
 
             @Override
             public void onResponse(Call call, final Response response) throws IOException {
                 if (!response.isSuccessful()) {
+                    Toast.makeText(context, "Error al conectarse al servidor.", Toast.LENGTH_SHORT).show();
                     throw new IOException("Unexpected code " + response);
                 }
 

@@ -49,18 +49,7 @@ public class Snipplet implements Serializable {
         this.contenido = contenido;
     }
 
-    /*public boolean buscarTexto(String palabra) {
 
-        if (contenido.trim().toLowerCase().indexOf(palabra.trim().toLowerCase()) != -1 || titulo.trim().toLowerCase().indexOf(palabra.trim().toLowerCase()) != -1) {
-
-            return true;
-        } else {
-
-            return false;
-
-        }
-
-    }*/
 
     public boolean buscarTexto(String palabrasAUX ){
 
@@ -92,9 +81,6 @@ public class Snipplet implements Serializable {
                 contador++;
                 flag = false;
             }
-
-
-
 
         }
 

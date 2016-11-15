@@ -12,7 +12,11 @@
         android:layout_height="wrap_content"
         android:text="Buscar:"
         android:textAppearance="?android:attr/textAppearanceLarge" />
-
+    <Switch
+        android:text="Solo Categoria"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/switch1" />
     <EditText
         android:id="@+id/editTextDialogUserInput"
         android:layout_width="match_parent"
