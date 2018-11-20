@@ -18,6 +18,7 @@ public class Snipplet implements Serializable {
     private long id;
     private String titulo;
     private String contenido;
+    private String nombreCategoria;
 
     public Snipplet(){
 
@@ -68,11 +69,11 @@ public class Snipplet implements Serializable {
         for (String palabra :palabras ) {
 
             boolean flag = false;
-            if(contenido.trim().toLowerCase().indexOf(palabra) != -1){
+            if(contenido.trim().toLowerCase().indexOf(palabra.toLowerCase()) != -1){
                 flag = true;
 
             }
-            if(titulo.trim().toLowerCase().indexOf(palabra) != -1){
+            if(titulo.trim().toLowerCase().indexOf(palabra.toLowerCase()) != -1){
                 flag = true;
 
             }
@@ -99,5 +100,13 @@ public class Snipplet implements Serializable {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public String getNombreCategoria() {
+        return nombreCategoria;
+    }
+
+    public void setNombreCategoria(String nombreCategoria) {
+        this.nombreCategoria = nombreCategoria;
     }
 }

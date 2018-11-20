@@ -196,9 +196,14 @@ private Context context;
                 }
 
                 String responseBody = response.body().string();
-                CategoriaDTO categoriaDTO = mapper.readValue(responseBody, CategoriaDTO.class);
-                databaseHandler.addCategoria(categoriaDTO);
-                databaseHandler.addSnipplets(categoriaDTO);
+                SendDTO sendDTO  =null;
+                try {
+                    sendDTO = mapper.readValue(responseBody, SendDTO.class);
+                }catch(Exception e ){
+                    e.printStackTrace();
+                }
+                databaseHandler.addCategoria(sendDTO.getCategoriaDTO());
+                databaseHandler.addSnipplets(sendDTO.getCategoriaDTO());
 
 
             }
