@@ -13,7 +13,7 @@ import android.widget.Toast;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
-
+import java.util.stream.Collectors;
 
 
 import ar.com.sourcesistemas.snipplet.AdministrarNubeActivity;
@@ -21,6 +21,7 @@ import ar.com.sourcesistemas.snipplet.AdministrarNubeActivity;
 import ar.com.sourcesistemas.snipplet.database.DatabaseHandler;
 import ar.com.sourcesistemas.snipplet.domain.Preferences;
 
+import ar.com.sourcesistemas.snipplet.domain.Snipplet;
 import ar.com.sourcesistemas.snipplet.dto.CategoriaDTO;
 
 import ar.com.sourcesistemas.snipplet.dto.SendDTO;
@@ -79,6 +80,7 @@ private Context context;
             @Override
             public void onFailure(Call call, IOException e) {
                 Log.d("failure","failure");
+                Toast.makeText(null,"Fallo al conectarse con el servidor",Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
             }
 
@@ -250,15 +252,17 @@ private Context context;
 
                     String responseBody = response.body().string();
 
-                    CategoriaDTO categoriaDTO = mapper.readValue(responseBody, CategoriaDTO.class);
-                    System.out.println("categoria nombre: "+categoriaDTO.getNombre());
-                    databaseHandler.addCategoria(categoriaDTO);
-                    System.out.println("categoria primer snipplet : "+categoriaDTO.getSnipplets().get(0).getTitulo());
-                    databaseHandler.addSnipplets(categoriaDTO);
-
+                    SendDTO sendDTO = mapper.readValue(responseBody, SendDTO.class);
+                    System.out.println("categoria nombre: "+sendDTO.getCategoriaDTO().getNombre());
+                    System.out.println("Borro la categoria DTO");
+                    databaseHandler.deleteCategoria(sendDTO.getCategoriaDTO());
+                    System.out.println("La creo y la guardo");
+                    databaseHandler.addCategoria(sendDTO.getCategoriaDTO());
+                    databaseHandler.addSnipplets(sendDTO.getCategoriaDTO());
 
                 }
             });
+            //databaseHandler.deleteCategoria();
 
 
 
